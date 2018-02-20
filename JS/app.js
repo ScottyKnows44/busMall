@@ -17,6 +17,7 @@ function SurveyPicture(name, filepath) {
   this.filepath = filepath;
   this.votesPerPicture = 0;
   allPictures.push(this);
+  this.viewsShown = 0;
 }
 
 // list of all all pictures used in the constructor
@@ -58,7 +59,7 @@ pics.addEventListener('click', votingOnPictures);
 function choosingThreePictures() {
   while ( threePictures.length < 6) {
     var flag = false;
-    var indexOfPictures = randomPicture();
+    var indexOfPictures = parseInt(randomPicture());
     for ( var i = 0; i < threePictures.length; i++) {
       if (indexOfPictures === threePictures[i]) {
         flag = true;
@@ -66,11 +67,11 @@ function choosingThreePictures() {
     }
     if ( flag === false) {
       threePictures.push(indexOfPictures);
+      allPictures[indexOfPictures].viewsShown++;
+      console.log(allPictures[indexOfPictures].viewsShown);
     }
   }
-
   threePictures.splice(0, 3);
-
 }
 choosingThreePictures();
 
@@ -117,7 +118,7 @@ function totalVotesForEverything(){
   var dataSection = document.getElementById('data');
   for (var i = 0; i < allPictures.length; i++) {
     var trEl = document.createElement('li');
-    trEl.textContent = allPictures[i].name + ' Has ' + allPictures[i].votesPerPicture;
+    trEl.textContent = allPictures[i].name + ' Has ' + allPictures[i].votesPerPicture + ' votes.';
     console.log(i, allPictures[i].name, allPictures[i].votesPerPicture);
     voteForm.appendChild(trEl);
   }
