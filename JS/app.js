@@ -26,7 +26,7 @@ new SurveyPicture('bag', 'img/bag.jpg');
 new SurveyPicture('banana', 'img/banana.jpg');
 new SurveyPicture('bathroom', 'img/bathroom.jpg');
 new SurveyPicture('boots', 'img/boots.jpg');
-new SurveyPicture('breaskfast', 'img/breakfast.jpg');
+new SurveyPicture('breakfast', 'img/breakfast.jpg');
 new SurveyPicture('bebblegum', 'img/bubblegum.jpg');
 new SurveyPicture('chair', 'img/chair.jpg');
 new SurveyPicture('cthulhu', 'img/cthulhu.jpg');
@@ -42,6 +42,16 @@ new SurveyPicture('unicorn', 'img/unicorn.jpg');
 new SurveyPicture('usb', 'img/usb.jpg');
 new SurveyPicture('water-can', 'img/water-can.jpg');
 new SurveyPicture('wine-glass', 'img/wine-glass.jpg');
+
+// array's to hold data for chart
+var votes = [];
+var labels = [];
+function updateChart() {
+  for (var i = 0; i < allPictures.length; i++) {
+    votes[i] = allPictures[i].votesPerPicture;
+    labels[i] = allPictures[i].name;
+  }
+}
 
 // function to randomly display picture
 
@@ -68,7 +78,6 @@ function choosingThreePictures() {
     if ( flag === false) {
       threePictures.push(indexOfPictures);
       allPictures[indexOfPictures].viewsShown++;
-      console.log(allPictures[indexOfPictures].viewsShown);
     }
   }
   threePictures.splice(0, 3);
@@ -101,26 +110,54 @@ function votingOnPictures (event) {
         allPictures[threePictures[i]].votesPerPicture++;
       }
     }
-    if (totalVotes > 24) {
+    if (totalVotes === 25) {
       pics.removeEventListener('click', votingOnPictures);
       pics.innerHTML= '';
-      totalVotesForEverything();
+      updateChart();
+      drawBarGraph();
     }
     choosingThreePictures();
     displayPictures();
   }
 }
 
-// makes the list of total votes per pictures and displays them
+// Making the graph
 
-function totalVotesForEverything(){
-  var voteForm = document.createElement('ul');
-  var dataSection = document.getElementById('data');
-  for (var i = 0; i < allPictures.length; i++) {
-    var trEl = document.createElement('li');
-    trEl.textContent = allPictures[i].name + ' Has ' + allPictures[i].votesPerPicture + ' votes.';
-    console.log(i, allPictures[i].name, allPictures[i].votesPerPicture);
-    voteForm.appendChild(trEl);
-  }
-  dataSection.appendChild(voteForm);
+var data = {
+  labels: labels,
+  datasets: [{
+    label: 'Bar Graph Of Votes',
+    data: votes,
+    backgroundColor: [
+      'bisque',
+      'darkgray',
+      'burlywood',
+      'lightblue',
+      'navy'
+    ],
+  }]
+};
+
+function drawBarGraph() {
+  var ctx = document.getElementById('votesChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: data,
+    options: {
+      responsive: false,
+      animation: {
+        duration: 1000,
+        easing: 'easeOutBounce'
+      }
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          max: 25,
+          min: 0,
+          stepSize: 1.0
+        }
+      }]
+    }
+  });
 }
