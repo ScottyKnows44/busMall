@@ -1,23 +1,25 @@
 'use strict';
-var totalVotes = 0
+
+// global variables
+
+var totalVotes = 0;
 var threePictures = [];
 var pics = document.getElementById('pics');
 var leftPicture = document.getElementById('left');
 var centerPicture = document.getElementById('center');
 var rightPicture = document.getElementById('right');
 var allPictures = [];
-// function to make pictures
 
 // constructor for pictures
 
 function SurveyPicture(name, filepath) {
   this.name = name;
   this.filepath = filepath;
-  this.votesPerPicture = 0
+  this.votesPerPicture = 0;
   allPictures.push(this);
 }
-// SurveyPicture.allPictures = [];
 
+// list of all all pictures used in the constructor
 
 new SurveyPicture('bag', 'img/bag.jpg');
 new SurveyPicture('banana', 'img/banana.jpg');
@@ -45,43 +47,45 @@ new SurveyPicture('wine-glass', 'img/wine-glass.jpg');
 function randomPicture() {
   var randomPictureOutOfEverything = Math.floor(Math.random() * allPictures.length);
   allPictures[randomPictureOutOfEverything];
-  return randomPictureOutOfEverything
+  return randomPictureOutOfEverything;
 }
 
-// event listener 
+// event listener
 pics.addEventListener('click', votingOnPictures);
 
 // gets three pictures and adds them to array
 
 function choosingThreePictures() {
   while ( threePictures.length < 6) {
-    var flag = false
+    var flag = false;
     var indexOfPictures = randomPicture();
     for ( var i = 0; i < threePictures.length; i++) {
       if (indexOfPictures === threePictures[i]) {
-        flag = true;   
+        flag = true;
       }
-    } 
+    }
     if ( flag === false) {
       threePictures.push(indexOfPictures);
     }
   }
- 
+
   threePictures.splice(0, 3);
-  
+
 }
 choosingThreePictures();
 
+// takes the three pictures and displays them
+
 function displayPictures(){
-leftPicture.src = allPictures[threePictures[0]].filepath;
-leftPicture.alt = allPictures[threePictures[0]].name;
-leftPicture.title = allPictures[threePictures[0]];
-centerPicture.src = allPictures[threePictures[1]].filepath;
-centerPicture.alt = allPictures[threePictures[1]].name;
-centerPicture.title = allPictures[threePictures[1]];
-rightPicture.src = allPictures[threePictures[2]].filepath;
-rightPicture.alt = allPictures[threePictures[2]].name;
-rightPicture.title = allPictures[threePictures[2]];
+  leftPicture.src = allPictures[threePictures[0]].filepath;
+  leftPicture.alt = allPictures[threePictures[0]].name;
+  leftPicture.title = allPictures[threePictures[0]];
+  centerPicture.src = allPictures[threePictures[1]].filepath;
+  centerPicture.alt = allPictures[threePictures[1]].name;
+  centerPicture.title = allPictures[threePictures[1]];
+  rightPicture.src = allPictures[threePictures[2]].filepath;
+  rightPicture.alt = allPictures[threePictures[2]].name;
+  rightPicture.title = allPictures[threePictures[2]];
 }
 
 displayPictures();
@@ -90,33 +94,32 @@ displayPictures();
 
 function votingOnPictures (event) {
   if (event.target.alt) {
-    totalVotes++
+    totalVotes++;
     for (var i =0; i < threePictures.length; i++) {
       if (event.target.alt === allPictures[threePictures[i]].name) {
-        allPictures[threePictures[i]].votesPerPicture++
+        allPictures[threePictures[i]].votesPerPicture++;
       }
     }
-    if  (totalVotes > 25) {
+    if (totalVotes > 24) {
       pics.removeEventListener('click', votingOnPictures);
       pics.innerHTML= '';
       totalVotesForEverything();
-    } 
+    }
     choosingThreePictures();
     displayPictures();
   }
 }
 
-function totalVotesForEverything(event){
-  // console.log();
+// makes the list of total votes per pictures and displays them
+
+function totalVotesForEverything(){
   var voteForm = document.createElement('ul');
   var dataSection = document.getElementById('data');
-  for  (var i = 0; i < allPictures.length; i++) {
+  for (var i = 0; i < allPictures.length; i++) {
     var trEl = document.createElement('li');
-    trEl.textContent =  allPictures[i].name + " Has " + allPictures[i].votesPerPicture
+    trEl.textContent = allPictures[i].name + ' Has ' + allPictures[i].votesPerPicture;
     console.log(i, allPictures[i].name, allPictures[i].votesPerPicture);
     voteForm.appendChild(trEl);
   }
   dataSection.appendChild(voteForm);
 }
-
-// totalVotesForEverything();
