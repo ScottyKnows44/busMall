@@ -1,8 +1,30 @@
-* {
-  color: blue;
+body {
+  color: rgb(23, 36, 36);
+  font-family: 'Anton', sans-serif;
+  background-color: rgb(43, 60, 60);
+}
+
+header {
+  background-color: #474041;
+  height: 100px;
+}
+
+header h1 {
+  font-size: 40px;
+}
+
+p {
+  font-size: 25px;
+  width: 80%;
+  margin-: 20% auto; 
 }
 
 img {
+  background-color: white;
   height: 200px;
   width: 200px;
+  padding: 20px;
+  border: 10px solid;
+  border-radius: 8px 15px;
+  margin-top: 10px;
 }
