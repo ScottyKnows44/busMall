@@ -8,6 +8,7 @@ var pics = document.getElementById('pics');
 var leftPicture = document.getElementById('left');
 var centerPicture = document.getElementById('center');
 var rightPicture = document.getElementById('right');
+var labels = [];
 var allPictures = [];
 
 // constructor for pictures
@@ -16,8 +17,10 @@ function SurveyPicture(name, filepath) {
   this.name = name;
   this.filepath = filepath;
   this.votesPerPicture = 0;
-  allPictures.push(this);
   this.viewsShown = 0;
+  labels.push(name);
+  allPictures.push(this);
+
 }
 
 // list of all all pictures used in the constructor
@@ -45,11 +48,13 @@ new SurveyPicture('wine-glass', 'img/wine-glass.jpg');
 
 // array's to hold data for chart
 var votes = [];
-var labels = [];
+
 function updateChart() {
   for (var i = 0; i < allPictures.length; i++) {
-    votes[i] = allPictures[i].votesPerPicture;
-    labels[i] = allPictures[i].name;
+    if (votes[i] === undefined) {
+      votes[i] = 0;
+    }
+    votes[i] += allPictures[i].votesPerPicture;
   }
 }
 
@@ -61,8 +66,22 @@ function randomPicture() {
   return randomPictureOutOfEverything;
 }
 
-// event listener
-pics.addEventListener('click', votingOnPictures);
+// Retrieving the previous votes or create instance from scratch
+
+function createInstanceOrRetrieveThem() {
+  if (localStorage.votes) {
+    localStorage.votes;
+    votes = JSON.parse(localStorage.votes);
+  }
+  pics.addEventListener('click', votingOnPictures);
+}
+createInstanceOrRetrieveThem();
+
+// function to store in localStorage
+
+function savingVotesInGraph() {
+  localStorage.votes = JSON.stringify(votes);
+}
 
 // gets three pictures and adds them to array
 
@@ -115,6 +134,7 @@ function votingOnPictures (event) {
       pics.innerHTML= '';
       updateChart();
       drawBarGraph();
+      savingVotesInGraph();
     }
     choosingThreePictures();
     displayPictures();
@@ -133,7 +153,22 @@ var data = {
       'darkgray',
       'burlywood',
       'lightblue',
-      'navy'
+      'navy',
+      'gold',
+      'pearl',
+      'purple',
+      'silver',
+      'gray',
+      'white',
+      'slate gray',
+      'yellow',
+      'aquamarine',
+      'wheat',
+      'fire brick',
+      'powder blue',
+      'sienna',
+      'dark grey',
+      'black'
     ],
   }]
 };
