@@ -181,7 +181,7 @@ function drawBarGraph() {
     options: {
       responsive: false,
       animation: {
-        duration: 1000,
+        duration: 2000,
         easing: 'easeOutBounce'
       }
     },
