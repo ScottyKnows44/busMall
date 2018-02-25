@@ -70,7 +70,6 @@ function randomPicture() {
 
 function createInstanceOrRetrieveThem() {
   if (localStorage.votes) {
-    localStorage.votes;
     votes = JSON.parse(localStorage.votes);
   }
   pics.addEventListener('click', votingOnPictures);
